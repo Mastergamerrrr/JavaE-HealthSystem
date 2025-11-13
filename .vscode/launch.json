@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "QRcodemerge",
+            "request": "launch",
+            "mainClass": "com.example.QRcodemerge",
+            "projectName": "scanner_d4cf2a7e"
+        },
+        {
+            "type": "java",
+            "name": "QRScanner",
+            "request": "launch",
+            "mainClass": "com.example.QRScanner",
+            "projectName": "scanner_d4cf2a7e"
+        },
+        {
+            "type": "java",
+            "name": "Launch QRScanner",
+            "request": "launch",
+            "mainClass": "com.example.QRScanner",
+            "projectName": "qr-scanner",
+            "classPaths": [
+                "bin",
+                "lib/*"
+            ]
+        }
+    ]
+}
