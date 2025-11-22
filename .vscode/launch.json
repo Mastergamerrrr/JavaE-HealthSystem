@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "QRScanner",
+            "request": "launch",
+            "mainClass": "com.example.QRScanner",
+            "projectName": "JavaE-HealthSystem_892efa95"
+        },
+        {
+            "type": "java",
             "name": "QRcodemerge",
             "request": "launch",
             "mainClass": "com.example.QRcodemerge",

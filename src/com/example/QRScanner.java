@@ -54,12 +54,13 @@ import java.util.Date;
 public class QRScanner {
     private static final String ADMIN_USERNAME = "0101";
     private static final String ADMIN_PASSWORD = "000010000";
-    private static final String USER_DATABASE = "C:\\Users\\labor\\OneDrive\\Desktop\\scanner\\users.txt";
-    private static final String MEDICATION_DATABASE = "C:\\Users\\labor\\OneDrive\\Desktop\\scanner\\medication.txt";
-    private static final String STAFF_DATABASE = "C:\\Users\\labor\\OneDrive\\Desktop\\scanner\\staff.txt";
-    private static final String DOCTORS_DATABASE = "C:\\Users\\labor\\OneDrive\\Desktop\\scanner\\doctors.txt";
-    private static final String ASSESSMENT_DATABASE = "C:\\Users\\labor\\OneDrive\\Desktop\\scanner\\Assessment.txt";
-    private static final String VITALS_DATABASE = "C:\\Users\\labor\\OneDrive\\Desktop\\scanner\\vibs.txt";
+    private static final String BASE_DIR = System.getProperty("user.dir");
+    private static final String USER_DATABASE = BASE_DIR + "\\users.txt";
+    private static final String MEDICATION_DATABASE = BASE_DIR + "\\medication.txt";
+    private static final String STAFF_DATABASE = BASE_DIR + "\\staff.txt";
+    private static final String DOCTORS_DATABASE = BASE_DIR + "\\doctors.txt";
+    private static final String ASSESSMENT_DATABASE = BASE_DIR + "\\Assessment.txt";
+    private static final String VITALS_DATABASE = BASE_DIR + "\\vibs.txt";
     private static final long SCAN_INTERVAL = 500; // milliseconds
     private static final long SCAN_COOLDOWN = 5000; // 5 seconds cooldown after successful scan
 
@@ -135,7 +136,13 @@ public class QRScanner {
     };
 
     public static void main(String[] args) {
-        Path verificationDir = Paths.get("C:\\Users\\labor\\OneDrive\\Desktop\\scanner\\verification_images");
+        // Create data directory if it doesn't exist
+        File dataDir = new File(BASE_DIR);
+        if (!dataDir.exists()) {
+            dataDir.mkdirs();
+        }
+    
+        Path verificationDir = Paths.get(BASE_DIR + File.separator + "verification_images");
         try {
             Files.createDirectories(verificationDir);
         } catch (IOException e) {
@@ -1452,8 +1459,7 @@ public class QRScanner {
                     String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
                     String extension = imagePath[0].substring(imagePath[0].lastIndexOf("."));
                     String newFilename = "verification_" + patient.username + "_" + timestamp + extension;
-                    Path destination = Paths.get("C:\\Users\\labor\\OneDrive\\Desktop\\scanner\\verification_images",
-                            newFilename);
+                    Path destination = Paths.get(BASE_DIR + File.separator + "verification_images", newFilename);
                     Files.createDirectories(destination.getParent());
                     Files.copy(Paths.get(imagePath[0]), destination, StandardCopyOption.REPLACE_EXISTING);
                     verificationImagePath = destination.toString();
@@ -3266,7 +3272,7 @@ public class QRScanner {
 
         // Contact Number Components
         JTextField contactNumberField = new JTextField(25);
-        addField(leftPanel, gbc, "Contact Number:", contactNumberField, row++);
+        addField(leftPanel, gbc, "Contact Number (Format: XXXX-XXX-XXXX):", contactNumberField, row++);
 
         // Profession Components
         JComboBox<String> professionCombo = new JComboBox<>(MEDICAL_PROFESSIONS);
@@ -3359,8 +3365,9 @@ public class QRScanner {
             // Contact number validation
             String contactNumber = contactNumberField.getText().trim();
             if (!contactNumber.matches("^\\d{4}-\\d{3}-\\d{4}$")) {
-                JOptionPane.showMessageDialog(staffDialog, "Invalid contact format", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(staffDialog, 
+                    "Invalid contact format. Must be exactly: XXXX-XXX-XXXX (11 digits)", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
                 isValid = false;
             }
 
