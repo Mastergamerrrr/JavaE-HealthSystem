@@ -2,6 +2,8 @@ package com.example;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+
+import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,7 +25,8 @@ public class PDFGenerator {
         Document document = new Document();
         try {
             // Create PDF file with username as filename
-            String filePath = "C:\\Users\\labor\\OneDrive\\Desktop\\scanner\\" + user.username + "_profile.pdf";
+            String userHome = System.getProperty("user.home");
+            String filePath = userHome + File.separator + "Desktop" + File.separator + user.username + "_profile.pdf";
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
             document.open();
 
